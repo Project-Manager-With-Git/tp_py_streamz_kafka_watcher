@@ -1,0 +1,38 @@
+from typing import Dict, Any, Union, List, Optional
+from pyloggerhelper import log
+from pyproxypattern import Proxy
+from streamz import Stream
+
+
+class KafkaWatcher(Proxy):
+    @classmethod
+    def from_kafka(clz, topics: List[str], consumer_params: Dict[str, Any], poll_interval: float = 0.1, **kwargs: Any) -> "KafkaWatcher":
+        """初始化创建一个监听对象.
+        参数参考<https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md>
+        """
+        c = Stream.from_kafka(topics=topics, consumer_params=consumer_params, poll_interval=poll_interval, **kwargs)
+        p = clz(c)
+        return p
+
+    @classmethod
+    def from_kafka_batched(clz, topic: str, consumer_params: Dict[str, Any], poll_interval: str = '1s',
+                           npartitions: Optional[int] = None, refresh_partitions: bool = False,
+                           start: bool = False, dask: bool = False,
+                           max_batch_size: int = 10000, keys: bool = False,
+                           engine: Optional[str] = None, **kwargs: Any) -> "KafkaWatcher":
+        """初始化创建一个监听对象.
+        参数参考<https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md>
+        """
+        c = Stream.from_kafka_batched(topic=topic,
+                                      consumer_params=consumer_params,
+                                      poll_interval=poll_interval,
+                                      npartitions=npartitions,
+                                      refresh_partitions=refresh_partitions,
+                                      start=start, dask=dask,
+                                      max_batch_size=max_batch_size, keys=keys,
+                                      engine=engine, **kwargs)
+        p = clz(c)
+        return p
+
+    def _instance_check(self, instance: Any) -> bool:
+        return isinstance(instance, Stream)
