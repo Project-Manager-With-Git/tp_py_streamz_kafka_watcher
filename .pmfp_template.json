@@ -2,7 +2,7 @@
     "language": "py",
     "env": "venv",
     "description": "用于监听kafka消息的流应用模板,使用streamz,同时提供了用于测试的confluent-kafka的生产者应用",
-    "author": "hsz12",
+    "author": "hsz",
     "template_type": "watcher",
     "requires": [
         "pyproxypattern >= 0.0.1",
@@ -67,7 +67,7 @@
             "default_path": "dockerfile"
         },
         "dockercompose": {
-            "source": "cp_dockercompose//kafka_broker_standalone",
+            "source": "cp_dockercompose@v0.0.2//kafka_broker_standalone",
             "description": "用于测试程序的docker-compose文件",
             "default_path": "docker-compose.yml"
         }
